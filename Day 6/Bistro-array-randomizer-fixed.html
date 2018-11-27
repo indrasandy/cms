@@ -1,0 +1,34 @@
+<html>
+<!-- our basic 'shell' for javascript work -->
+    <head>
+    <script type="text/javascript">
+
+        function getRandomIndex(arrayLength){
+            // get my randome array index
+            var rnd = Math.floor((Math.random() * arrayLength) + 0);
+            // return our random index back
+            return rnd;
+        }
+
+        function loadArraysAndGetSpecial(){
+            // instantiate my arrays
+            var breads = ["White", "Whole Wheat","Sour Dough","Rye","Parmi Oregano"];
+            var condiments = ["Dijon Mustard","Ranch","Sante Fe","Chipotle","Sirachi"];
+            var meats = ["Egg Plant","Chicken","Squap","Turkey","Beef"];
+
+            // some variable to hold our random ingredients
+            var rndBread = breads[getRandomIndex(breads.length)];
+            var rndConditment = condiments[getRandomIndex(condiments.length)];
+            var rndMeat = meats[getRandomIndex(meats.length)];
+
+            document.getElementById('special').innerHTML = "The special for the day is " +
+              rndMeat + " on " + rndBread + " with " + rndConditment + "<br/>"; 
+        }
+
+    </script>
+    </head>
+    <body>
+        <input type="button" value="Get Special for the Day" onclick="loadArraysAndGetSpecial()">
+        <div id="special"></div>
+    </body>
+</html>

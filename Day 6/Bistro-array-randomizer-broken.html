@@ -1,0 +1,21 @@
+<html>
+<!-- our basic 'shell' for javascript work -->
+    <head>
+    <script type="text/javascript">
+
+        function getRandomIndex(arrayLength){
+            // get my randome array index
+            var rnd = Math.floor((Math.random() * arrayLength) + 0);
+            // return our random index back
+            return rnd;
+        }
+
+
+
+    </script>
+    </head>
+    <body>
+        <input type="button" value="Get Special for the Day" onclick="loadArraysAndGetSpecial()">
+        <div id="special"></div>
+    </body>
+</html>

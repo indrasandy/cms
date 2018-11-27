@@ -1,0 +1,93 @@
+<html>
+<!-- our basic 'shell' for javascript work -->
+    <head>
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false">
+</script>
+
+    <style>
+        /*
+        set the map height explicity to ensure its the size we want
+        */
+        #map{
+            height: 600px;
+            width:  600px;
+        }
+
+        /*
+        this below makes the sample page fill the window/document
+        */
+        html,body{
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+      </style>
+    </head>
+    <body onload="getConstructionData()">
+          <h1>Road Construction in Calgary</h1>
+          <h6>Updated twice daily</h6>
+          <div id="map"></div>
+          <br/>
+          <table border="1" id="cTable">
+          </table>
+
+          <script type="text/javascript">
+
+          // https://data.calgary.ca/browse?limitTo=datasets -> chose 'Construction Detours'
+          // https://data.calgary.ca/Transportation-Transit/Construction-Detours/w8zq-79bq -> Click on API link -> API Docs...
+          // https://dev.socrata.com/foundry/data.calgary.ca/q5fe-imxj
+          // Jquery code snippet, sample output, App-Token all there (link above)
+          // Google Maps Mashup code:  https://dev.socrata.com/blog/2014/05/31/google-maps.html
+          // ^^ its in JQuery - I changed to javascript below and reorganized
+
+          // Intialize our map
+          var center = new google.maps.LatLng(51.0673759,-114.081962);
+          var mapOptions = {zoom: 12,center: center}
+          var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+              function getConstructionData(){
+                // Construct the query string
+                url = 'https://data.calgary.ca/resource/q5fe-imxj.json?'
+                    + '$$app_token=bjp8KrRvAPtuf809u1UXnI0Z8'
+                    + '&$limit=500';
+
+                // set up AJAX
+                var xhttp=new XMLHttpRequest();
+                // ajax response handler
+                xhttp.onreadystatechange = function(){
+                    // have we finished getting the resonse?
+                    if(xhttp.readyState==4 && xhttp.status==200){
+                        // successfully got a response, parse it
+                        var responseArray = JSON.parse(xhttp.responseText);
+                        // call a function to output the data
+                        outputConstructionData(responseArray);
+                    }
+                }
+                xhttp.open("GET",url,true);
+                xhttp.send();
+              }
+
+              function outputConstructionData(cArray){
+                // variable for output of table data
+                var tableOutput = "<tr><th>Location</th><th>Description</th><th>Start Date</th><th>End Date</th></tr>";
+                 for(cInstance of cArray){
+                   var marker = new google.maps.Marker({
+                      position: new google.maps.LatLng(cInstance.location.coordinates[1],
+                                          cInstance.location.coordinates[0]),
+                      map: map,
+                      title: cInstance.construction_info
+                    });
+                    tableOutput+="<tr><td>" + cInstance.construction_info +
+                    "</td><td>" + cInstance.description + "</td><td nowrap>" +
+                    cInstance.start_dt.substring(0,10) + "</td><td nowrap>" +
+                    cInstance.end_dt.substring(0,10) + "</td></tr>"
+                 }
+                 // output the table data
+                 document.getElementById('cTable').innerHTML = tableOutput;
+              }
+          </script>
+
+    </body>
+
+
+</html>

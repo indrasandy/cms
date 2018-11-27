@@ -1,0 +1,43 @@
+#  Commands to change a website's IP address successfully:
+#  Update the wp-config.php file:
+cd /var/www/html/<website-folder-to-update>
+sudo vi wp-config.php
+	[SHIFT] G   (to go to the end of the file)
+	[ESC] i     (insert)
+	define('WP_HOME','http://<new-IP-address>/<website-folder-to-update>');
+
+	define('WP_SITEURL','http://<new-IP-address>/<website-folder-to-update>');
+
+
+
+	[ESC] :wq! [ENTER]
+
+# Get to the MySql command prompt
+mysql -u root -p
+
+use <website's db-name>;
+Update wp_posts set post_content=replace(post_content,'href="http://<old-IP-address>"','href="http://<new-IP-address>');
+
+
+
+
+
+
+Update wp_posts set post_content=replace(post_content, 'src="http://<old-IP-address>"','src="http://<new-IP-address>');
+
+
+
+
+
+
+
+select * from wp_options where option_name='siteurl';
+
+
+update wp_options set option_value='http://<new-IP-address>/<website-folder-to-update>' where option_name='siteurl';
+
+
+select * from wp_options where option_name='home';
+
+
+update wp_options set option_value='http://<new-IP-address>/<website-folder-to-update>' where option_name='home';
